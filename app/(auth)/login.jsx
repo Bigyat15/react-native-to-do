@@ -5,9 +5,11 @@ import ThemedText from '../../components/ThemedText';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../../constants/Colors';
 import ThemedTextInput from '../../components/ThemedTextInput';
+import { useRouter } from 'expo-router';
 
 const Login = () => {
     const colorScheme = useColorScheme()
+    const router = useRouter()
     const theme = Colors[colorScheme] ?? Colors.light
     return (
         <>
@@ -28,7 +30,9 @@ const Login = () => {
                     <ThemedTextInput className="m-2 rounded-lg p-4 text-xl" placeholder="Enter your password" />
                     <ThemedView className="flex flex-row items-center justify-end mr-4 mt-2">
                         <ThemedText>Don't Have An Account? </ThemedText>
-                        <ThemedText className="underline"> Login</ThemedText>
+                        <ThemedText
+                        onPress={() => router.push("/register")}
+                        className="underline"> Register</ThemedText>
                     </ThemedView>
                     <TouchableOpacity
                     activeOpacity={0.7}

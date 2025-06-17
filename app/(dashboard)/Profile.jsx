@@ -6,7 +6,7 @@ import ThemedText from '../../components/ThemedText';
 const Profile = () => {
   return (
     <ThemedView className="flex-1" safe={true}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+      <ScrollView>
         <ThemedView className="flex items-center">
           <ThemedText className="text-xl">Welcome Back, Bigyat</ThemedText>
         </ThemedView>
