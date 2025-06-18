@@ -6,29 +6,28 @@ import {
   signOut,
   onAuthStateChanged
 } from 'firebase/auth';
+import { useRouter } from 'expo-router';
 
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [authChecked,setAuthChecked] = useState(false);
+  const router = useRouter()
 
   useEffect(() => {
-    try{
-      const unsubscribe = auth.onAuthStateChanged((user) => {
-        setUser(user);
-      });
-      return unsubscribe;
-    }catch(err){
-      console.log(err)
-    }finally{
-      setAuthChecked(true)
-    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setAuthChecked(true); 
+    });
+    return unsubscribe;
   }, []);
+  
 
   async function login(email, password) {
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/(dashboard)/Profile")
     } catch (error) {
       console.error('Login error:', error);
     }
@@ -37,6 +36,7 @@ export function UserProvider({ children }) {
   async function register(email, password) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      // router.push("/(auth)/login")
     } catch (error) {
       console.error('Register error:', error);
     }
@@ -45,6 +45,7 @@ export function UserProvider({ children }) {
   async function logout() {
     try {
       await auth.signOut();
+      router.replace("/")
     } catch (error) {
       console.error('Logout error:', error);
     }

@@ -1,24 +1,24 @@
-import { useRouter } from 'expo-router';
-import React, { useEffect,useState } from 'react';
-import ThemedLoader from '../ThemedLoader';
-import { useUser }  from '../../hooks/useUser';
+import { useRouter, usePathname } from "expo-router";
+import { useUser } from "../../hooks/useUser";
+import { useEffect } from "react";
+import ThemedLoading from "../ThemedLoader";
 
-const UserOnly = ({children}) => {
-    const {user,authChecked} = useUser();
-    const router = useRouter()
+const UserOnly = ({ children }) => {
+  const { user, authChecked } = useUser();
+  const router = useRouter();
+  
 
-    useEffect(() => {
-        if(authChecked && user === null){
-            router.replace("/login")
-        }
-    },[user,authChecked])
-
-    if (!authChecked || !user){
-        return(
-            <ThemedLoader />
-        )
+  useEffect(() => {
+    if (authChecked && user === null) {
+      router.push("/");
     }
-    return children
-}
+  }, [user, authChecked]); 
+
+  if (!authChecked || !user) {
+    return <ThemedLoading />;
+  }
+
+  return children;
+};
 
 export default UserOnly;

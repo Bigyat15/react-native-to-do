@@ -4,14 +4,20 @@ import "../global.css"
 import ThemedView from '../components/ThemedView';
 import ThemedText from '../components/ThemedText';
 import { useRouter } from 'expo-router';
+import { useUser } from '../hooks/useUser';
 
 const Index = () => {
     const router = useRouter()
+    const { user } = useUser()
     const handleSubmit = () => {
         console.log(
             "Clicked"
         );
-        router.push("/login");
+        if(user){
+            router.push("/(dashboard)/Profile")
+        }else{
+            router.push("/(auth)/login")
+        }
     }
     return (
         <>

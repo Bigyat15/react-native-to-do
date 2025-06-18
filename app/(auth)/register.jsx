@@ -7,7 +7,7 @@ import { Colors } from '../../constants/Colors';
 import ThemedTextInput from '../../components/ThemedTextInput';
 import { useRouter } from 'expo-router';
 import { useUser } from '../../hooks/useUser';
-import  auth  from "@react-native-firebase/auth"
+
 
 const Register = () => {
     const colorScheme = useColorScheme()
@@ -34,6 +34,7 @@ const Register = () => {
                     </ThemedView>
                     <ThemedTextInput
                     value={email}
+                    keyboard-type="email-address"
                     onChangeText={setEmail}
                     placeholder='Enter you email' className="m-2 rounded-lg text-xl" />
                     <ThemedView className="flex flex-row gap-3 items-center justify-start ml-3 mt-2">
@@ -44,12 +45,13 @@ const Register = () => {
                     </ThemedView>
                     <ThemedTextInput
                     value={password}
+                    secureTextEntry
                     onChangeText={setPassword}
                     className="m-2 rounded-lg p-4 text-xl" placeholder="Enter your password" />
                     <ThemedView className="flex flex-row items-center justify-end mr-4 mt-2">
                         <ThemedText>Already Have an account?</ThemedText>
                         <ThemedText
-                        onPress={() => router.push("/register")}
+                        onPress={() => router.push("/(auth)/register")}
                         className="underline"> Login</ThemedText>
                     </ThemedView>
                     <TouchableOpacity
@@ -69,6 +71,5 @@ const Register = () => {
     );
 }
 
-const styles = StyleSheet.create({})
 
 export default Register;

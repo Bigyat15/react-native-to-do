@@ -3,60 +3,79 @@ import { Ionicons } from "@expo/vector-icons";
 import { useColorScheme } from 'react-native';
 import { Colors } from "../constants/Colors";
 import { UserProvider } from './contexts/UserContext';
+import { useUser } from "../hooks/useUser";
 
-function RootLayout() {
+
+function TabsLayout() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
+  const { user } = useUser();
 
   return (
-    <UserProvider>
-      <Tabs
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: theme.navBackground,
-            paddingTop: 10,
-            height: 90,
-          },
-          tabBarActiveTintColor: theme.iconColorFocused,
-          tabBarInactiveTintColor: theme.iconColor,
-        }}
-      >
-        <Tabs.Screen name="(auth)" options={{ title: "Profile", href: null, tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} /> }} />
-        <Tabs.Screen name="index" options={{
-          title: "Home",
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: theme.navBackground,
+          paddingTop: 10,
+          height: 90,
+        },
+        tabBarActiveTintColor: theme.iconColorFocused,
+        tabBarInactiveTintColor: theme.iconColor,
+      }}
+    >
+      <Tabs.Screen name="index" options={{
+        title: "Home",
+        tabBarIcon: ({ focused }) => (
+          <Ionicons name={focused ? "home" : "home-outline"} size={20} color={focused ? theme.iconColorFocused : theme.iconColor} />
+        )
+      }}
+      />
+      <Tabs.Screen
+        name="(dashboard)"
+        options={{
+          title: "Dashboard",
+          href: user ? "/(dashboard)/Profile" : null, 
           tabBarIcon: ({ focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={20} color={focused ? theme.iconColorFocused : theme.iconColor} />
+            <Ionicons name={focused ? "person" : "person-outline"} size={20} color={focused ? theme.iconColorFocused : theme.iconColor} />
           )
         }}
-        />
-        <Tabs.Screen
-          name="(dashboard)"
-          options={{
-            title: "Dashboard",
-            tabBarIcon: ({ focused }) => (
-              <Ionicons name={focused ? "person" : "person-outline"} size={20} color={focused ? theme.iconColorFocused : theme.iconColor} />
-            )
-          }}
-        />
-        <Tabs.Screen 
+      />
+      <Tabs.Screen 
         name="contexts/UserContext"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+      name="contexts/TodoContext"
+      options={{href:null}}
+      />
+      <Tabs.Screen
+        name="(todo)"
         options={{
-          href:null,
+          title: "Create Todo",
+          href: user ? "/(todo)/create" : null,
+          tabBarIcon: ({ focused }) => (
+            <Ionicons name={focused ? "create" : "create-outline"} size={20} color={focused ? theme.iconColorFocused : theme.iconColor} />
+          )
         }}
-        />
-        <Tabs.Screen
-          name="(todo)"
-          options={{
-            title: "Create Todo",
-            tabBarIcon: ({ focused }) => (
-              <Ionicons name={focused ? "create" : "create-outline"} size={20} color={focused ? theme.iconColorFocused : theme.iconColor} />
-            )
-          }}
-        />
-        
-      </Tabs>
+      />
+      <Tabs.Screen name="(auth)"
+      options={{ 
+        title: "Profile",
+        href: user ? null : "/(auth)/login", 
+        tabBarIcon: ({ focused }) => (
+          <Ionicons name={focused ? "person" : "person-outline"} size={20} color={focused ? theme.iconColorFocused : theme.iconColor} />
+        )
+      }}
+      />
+    </Tabs>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <UserProvider>
+      <TabsLayout />
     </UserProvider>
   );
 }
-export default RootLayout
