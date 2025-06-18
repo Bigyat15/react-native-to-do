@@ -7,14 +7,17 @@ import { Colors } from '../../constants/Colors';
 import ThemedTextInput from '../../components/ThemedTextInput';
 import { useRouter } from 'expo-router';
 import { useUser } from '../../hooks/useUser';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEmail, setPassword } from '../../store/loginSlice';
 
 const Login = () => {
     const colorScheme = useColorScheme()
     const router = useRouter()
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("");
+    const dispatch = useDispatch()
+    const {email,password} = useSelector((state) => state.login)
     const {login} = useUser()
     const theme = Colors[colorScheme] ?? Colors.light
+
     const handleSubmit = async () => {
         try{
             await login(email,password)
@@ -34,7 +37,7 @@ const Login = () => {
                     <ThemedTextInput
                     keyboard-type= "email-address"
                     value={email}
-                    onChangeText={setEmail}
+                    onChangeText={(text) =>dispatch(setEmail(text))}
                     placeholder='Enter you email' className="m-2 rounded-lg text-xl" />
                     <ThemedView className="flex flex-row gap-3 items-center justify-start ml-3 mt-2">
                         <Ionicons name="eye" size={25} color={theme.iconColor} />
@@ -45,7 +48,7 @@ const Login = () => {
                     <ThemedTextInput
                     secureTextEntry
                     value={password}
-                    onChangeText={setPassword}
+                    onChangeText={(text) => dispatch(setPassword(text))}
                     className="m-2 rounded-lg p-4 text-xl" placeholder="Enter your password" />
                     <ThemedView className="flex flex-row items-center justify-end mr-4 mt-2">
                         <ThemedText>Don't Have An Account? </ThemedText>

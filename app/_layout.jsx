@@ -4,7 +4,8 @@ import { useColorScheme } from 'react-native';
 import { Colors } from "../constants/Colors";
 import { UserProvider } from './contexts/UserContext';
 import { useUser } from "../hooks/useUser";
-
+import { Provider } from "react-redux";
+import store from "../store";
 
 function TabsLayout() {
   const colorScheme = useColorScheme();
@@ -74,8 +75,11 @@ function TabsLayout() {
 
 export default function RootLayout() {
   return (
-    <UserProvider>
+    <Provider store={store}>
+      <UserProvider>
       <TabsLayout />
     </UserProvider>
+    </Provider>
+    
   );
 }
